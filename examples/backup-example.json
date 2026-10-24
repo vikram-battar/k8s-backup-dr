@@ -1,0 +1,129 @@
+{
+  "cluster": "example-cluster",
+  "collected_at": "2026-10-24T13:18:27.473114+00:00",
+  "format": "k8s-backup-dr/v1",
+  "resources": {
+    "ConfigMap": [
+      {
+        "kind": "ConfigMap",
+        "metadata": {
+          "name": "web-cfg",
+          "namespace": "shop"
+        }
+      }
+    ],
+    "Deployment": [
+      {
+        "kind": "Deployment",
+        "metadata": {
+          "labels": {
+            "app": "web"
+          },
+          "name": "web",
+          "namespace": "shop"
+        },
+        "spec": {
+          "replicas": 2,
+          "selector": {
+            "matchLabels": {
+              "app": "web"
+            }
+          },
+          "template": {
+            "metadata": {
+              "labels": {
+                "app": "web"
+              }
+            },
+            "spec": {
+              "containers": [
+                {
+                  "image": "nginx:1.27",
+                  "name": "web",
+                  "ports": [
+                    {
+                      "containerPort": 80
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "Namespace": [
+      {
+        "kind": "Namespace",
+        "metadata": {
+          "labels": {
+            "team": "platform"
+          },
+          "name": "shop"
+        }
+      }
+    ],
+    "PersistentVolumeClaim": [
+      {
+        "kind": "PersistentVolumeClaim",
+        "metadata": {
+          "name": "web-data",
+          "namespace": "shop"
+        },
+        "spec": {
+          "accessModes": [
+            "ReadWriteOnce"
+          ],
+          "resources": {
+            "requests": {
+              "storage": "10Gi"
+            }
+          }
+        }
+      }
+    ],
+    "Secret": [
+      {
+        "data_keys": [
+          "token"
+        ],
+        "kind": "Secret",
+        "metadata": {
+          "name": "api-creds",
+          "namespace": "shop"
+        },
+        "note": "values not stored; re-create from your secret store",
+        "type": "Opaque"
+      }
+    ],
+    "Service": [
+      {
+        "kind": "Service",
+        "metadata": {
+          "name": "web-svc",
+          "namespace": "shop"
+        },
+        "spec": {
+          "ports": [
+            {
+              "port": 80,
+              "targetPort": 80
+            }
+          ],
+          "selector": {
+            "app": "web"
+          },
+          "type": "ClusterIP"
+        }
+      }
+    ]
+  },
+  "source_files": [
+    "configmaps.json",
+    "deployments.json",
+    "namespaces.json",
+    "persistentvolumeclaims.json",
+    "secrets.json",
+    "services.json"
+  ]
+}
